@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Hydra — Jogue sem limites{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<div class="demo-bar">🎓 Projeto escolar demonstrativo — nenhuma compra é real e nenhum pagamento é cobrado.</div>
+
+<header class="topbar">
+  <a class="brand" href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='images/hydra-logo.png') }}" alt=""><span>HYDRA<span class="dot">.</span></span></a>
+  <form class="search" action="{{ url_for('home') }}">
+    <input name="q" value="{{ q or '' }}" placeholder="Buscar jogos, gift cards, mods..." aria-label="Buscar produtos">
+  </form>
+  <nav class="main-nav">
+    {% for c in categories %}<a href="{{ url_for('category', slug=c.slug) }}">{{ c.menu }}</a>{% endfor %}
+    <a href="{{ url_for('support') }}">Suporte</a>
+  </nav>
+  <div class="header-actions">
+    <a class="cart-link" href="{{ url_for('cart') }}">🛒 Carrinho <span class="badge" data-cart-count>{{ cart_count }}</span></a>
+    {% if current_user %}
+      <a class="pill" href="{{ url_for('account') }}">Olá, {{ current_user.name.split(' ')[0] }}</a>
+      <a href="{{ url_for('logout') }}">Sair</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="pill">Entrar</a>
+      <a href="{{ url_for('register') }}" class="red-btn">Cadastrar</a>
+    {% endif %}
+  </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}
+<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>
+{% endif %}{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer class="footer">
+  <a class="brand" href="{{ url_for('home') }}"><span class="dragon-mark sm">🐉</span><span>HYDRA<span class="dot">.</span></span></a>
+  <span>Projeto escolar demonstrativo · Sem vendas reais</span>
+  <span>© 2026 Hydra</span>
+</footer>
+
+{% if request.endpoint != 'support' %}
+<a class="chat-fab" href="{{ url_for('support') }}" aria-label="Abrir suporte">💬<span>Suporte</span></a>
+{% endif %}
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

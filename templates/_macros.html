@@ -1,0 +1,31 @@
+{% macro product_card(p, ratio) %}
+<article class="product">
+  <div class="product-media {{ ratio }}"><img src="{{ url_for('static', filename='images/' + p.image) }}" alt="Arte ilustrativa: {{ p.name }}" loading="lazy"></div>
+  <div class="product-info">
+    <span class="tag">{{ p.tag }}</span>
+    <h3>{{ p.name }}</h3>
+    <p>{{ p.desc }}</p>
+    <div class="price-row"><span class="price">{{ p.price|brl }}</span></div>
+    <form class="add-form" method="post" action="{{ url_for('add_to_cart', product_id=p.id) }}">
+      <button class="red-btn" type="submit">🛒 Adicionar</button>
+    </form>
+  </div>
+</article>
+{% endmacro %}
+
+{% macro side_panels() %}
+<aside class="right-col">
+  <div class="panel" id="mini-cart">
+    <h3>🛒 <span>MEU CARRINHO</span></h3>
+    <div data-mini-items></div>
+    <div class="subtotal"><span>Total</span><b data-cart-total>{{ cart_total|brl }}</b></div>
+    <a class="red-btn" href="{{ url_for('cart') }}">VER CARRINHO ↗</a>
+  </div>
+  <div class="panel support-panel">
+    <div class="support-icon">💬</div>
+    <h3><span>SUPORTE HYDRA</span></h3>
+    <p>Dúvidas sobre produtos ou pedidos? Converse com o nosso chat demonstrativo.</p>
+    <a class="red-btn" href="{{ url_for('support') }}">ABRIR CHAT</a>
+  </div>
+</aside>
+{% endmacro %}

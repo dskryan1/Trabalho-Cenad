@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card, side_panels with context %}
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-nav">
+      <a class="active" href="{{ url_for('home') }}">◈ Início</a>
+      {% for c in categories %}<a href="{{ url_for('category', slug=c.slug) }}"><span>{{ c.icon }} {{ c.menu }}</span><em>{{ cat_counts[c.slug] }}</em></a>{% endfor %}
+      <a href="{{ url_for('support') }}">💬 Suporte</a>
+    </div>
+    <div class="side-note">
+      <div class="dragon-mark">🐉</div>
+      <h3>SUA EXPERIÊNCIA GAMER EM UM SÓ LUGAR!</h3>
+      <ul><li>✓ Jogos para PC</li><li>✓ Gift cards demonstrativos</li><li>✓ Otimização e mods</li><li>✓ Evolução de contas</li></ul>
+    </div>
+  </aside>
+
+  <main>
+    {% if not q %}
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">BEM-VINDO AO UNIVERSO HYDRA</div>
+        <h1>SEU MUNDO GAMER<br><em>COMEÇA AQUI.</em></h1>
+        <p>Jogos, gift cards, otimização, mods e upamento de contas — tudo organizado por categoria.</p>
+        <a class="red-btn" href="#categorias">EXPLORAR CATEGORIAS ↗</a>
+      </div>
+    </section>
+
+    <section class="cat-tiles" id="categorias">
+      {% for c in categories %}
+      <a class="cat-tile" href="{{ url_for('category', slug=c.slug) }}">
+        <span class="cat-icon">{{ c.icon }}</span><b>{{ c.name }}</b><small>{{ cat_counts[c.slug] }} itens</small>
+      </a>{% endfor %}
+    </section>
+    {% else %}
+    <div class="section-head"><h2>Resultados para “{{ q }}”</h2><a class="link-red" href="{{ url_for('home') }}">Limpar busca</a></div>
+    {% endif %}
+
+    {% for s in sections %}
+    <section class="cat-section" id="{{ s.cat.slug }}">
+      <div class="section-head">
+        <div><h2><span>{{ s.cat.icon }}</span>{{ s.cat.name }}</h2><p>{{ s.cat.desc }}</p></div>
+        <a class="link-red" href="{{ url_for('category', slug=s.cat.slug) }}">Ver todos ({{ s.total }}) →</a>
+      </div>
+      <div class="product-grid">{% for p in s.products %}{{ product_card(p, s.cat.ratio) }}{% endfor %}</div>
+    </section>
+    {% else %}
+    <div class="empty">Nenhum produto encontrado. Tente outra busca.</div>
+    {% endfor %}
+
+    <div class="notice"><b>Projeto escolar:</b> produtos, preços e gift cards são fictícios. Nenhum código digital real será entregue e nenhum pagamento será processado.</div>
+  </main>
+  {{ side_panels() }}
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Finalizar compra — Hydra{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="stepper-bar"><span class="done">1 Carrinho</span><span class="now">2 Pagamento</span><span>3 Confirmação</span></div>
+  <div class="eyebrow">CHECKOUT DEMONSTRATIVO</div>
+  <h1>Finalizar compra</h1>
+  <p class="muted">Fluxo 100% fictício para apresentação. Não digite dados reais de cartão ou documentos.</p>
+
+  <form method="post" id="checkout-form" novalidate>
+  <div class="checkout-grid">
+    <section class="checkout-card">
+      <h2>1. Seus dados</h2>
+      <div class="field"><label for="name">Nome completo</label><input id="name" name="name" required value="{{ form.get('name') or (user.name if user else '') }}" placeholder="Ex.: Maria Teste"></div>
+      <div class="field"><label for="email">E-mail (entrega digital simulada)</label><input id="email" type="email" name="email" required value="{{ form.get('email') or (user.email if user else '') }}" placeholder="exemplo@teste.com"></div>
+
+      <h2>2. Forma de pagamento</h2>
+      <div class="pay-tabs" role="tablist">
+        <label class="pay-tab"><input type="radio" name="method" value="pix" {{ 'checked' if form.get('method','pix')=='pix' }}><span>⚡ Pix</span></label>
+        <label class="pay-tab"><input type="radio" name="method" value="cartao" {{ 'checked' if form.get('method')=='cartao' }}><span>💳 Cartão</span></label>
+      </div>
+
+      <div class="pay-panel" id="pay-pix">
+        <div class="pix-box">
+          <canvas id="qr" width="168" height="168" aria-label="QR Code ilustrativo"></canvas>
+          <div>
+            <b>Pague com Pix (simulado)</b>
+            <p class="muted">QR Code ilustrativo — não existe cobrança. Clique em “Pagar” para concluir a simulação.</p>
+            <div class="copy-row"><code id="pix-code">00020126DEMO-HYDRA-ESCOLAR-0000-FICTICIO</code><button type="button" class="pill" id="copy-pix">Copiar</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pay-panel" id="pay-cartao" hidden>
+        <!-- Campos SEM atributo name: nada disso é enviado ao servidor. -->
+        <div class="field"><label>Número do cartão</label><input id="cc-num" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" autocomplete="off"></div>
+        <div class="field"><label>Nome impresso</label><input id="cc-name" placeholder="NOME TESTE" autocomplete="off"></div>
+        <div class="two"><div class="field"><label>Validade</label><input id="cc-exp" maxlength="5" placeholder="MM/AA" autocomplete="off"></div>
+        <div class="field"><label>CVV</label><input id="cc-cvv" maxlength="3" placeholder="000" autocomplete="off"></div></div>
+        <div class="field"><label>Parcelas</label>
+          <select id="cc-inst">{% for n in (1,2,3,6,10) %}<option value="{{ n }}">{{ n }}x de {{ (cart.total / n)|brl }} sem juros</option>{% endfor %}</select></div>
+        <p class="muted">Os dados deste formulário não são enviados nem armazenados.</p>
+      </div>
+
+      <div class="demo-warning">Não existe integração com gateway de pagamento. O botão apenas registra um pedido marcado como “DEMO – NÃO PAGO”.</div>
+    </section>
+
+    <aside class="checkout-card">
+      <h2>Resumo do pedido</h2>
+      {% for p in cart["items"] %}
+      <div class="cart-mini-item"><img src="{{ p.image_url }}" alt=""><div><b>{{ p.name }} × {{ p.qty }}</b><small>{{ p.subtotal|brl }}</small></div></div>
+      {% endfor %}
+      <div class="sum-row"><span>Subtotal</span><b>{{ cart.subtotal|brl }}</b></div>
+      {% if cart.discount %}<div class="sum-row discount"><span>Desconto {{ cart.coupon }}</span><b>− {{ cart.discount|brl }}</b></div>{% endif %}
+      <div class="sum-row total"><span>Total demonstrativo</span><b class="price">{{ cart.total|brl }}</b></div>
+      <button class="red-btn wide" type="submit" id="pay-btn">PAGAR {{ cart.total|brl }} (DEMO)</button>
+      <a class="pill wide center" href="{{ url_for('cart') }}">← Voltar ao carrinho</a>
+    </aside>
+  </div>
+  </form>
+</main>
+
+<div class="overlay" id="processing" hidden>
+  <div class="overlay-box"><div class="spinner"></div><h3 id="proc-title">Processando pagamento demonstrativo…</h3><p class="muted" id="proc-sub">Nenhum valor está sendo cobrado.</p></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='checkout.js') }}"></script>{% endblock %}

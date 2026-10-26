@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Carrinho — Hydra{% endblock %}
+{% block content %}
+<main class="page" id="cart-page">
+  <div class="eyebrow">SUA SELEÇÃO</div>
+  <h1>Meu carrinho</h1>
+  <p class="muted">Itens demonstrativos; nenhuma cobrança será feita.</p>
+
+  <div id="cart-empty" class="empty" {% if cart["items"] %}hidden{% endif %}>
+    Seu carrinho está vazio.<br><br><a class="red-btn" href="{{ url_for('home') }}">EXPLORAR PRODUTOS</a>
+  </div>
+
+  <div class="cart-layout" id="cart-filled" {% if not cart["items"] %}hidden{% endif %}>
+    <section class="cart-list">
+      {% for p in cart["items"] %}
+      <div class="cart-row" data-id="{{ p.id }}" data-price="{{ p.price }}">
+        <img src="{{ p.image_url }}" alt="">
+        <div class="cart-info"><b>{{ p.name }}</b><span class="muted">{{ p.cat_name }} · {{ p.price|brl }} cada</span></div>
+        <div class="stepper" aria-label="Quantidade">
+          <button type="button" data-act="dec" aria-label="Diminuir">−</button>
+          <span class="qty" data-qty>{{ p.qty }}</span>
+          <button type="button" data-act="inc" aria-label="Aumentar">+</button>
+        </div>
+        <div class="line-total" data-line>{{ p.subtotal|brl }}</div>
+        <button type="button" class="rm" data-act="rm" title="Remover">✕</button>
+      </div>
+      {% endfor %}
+    </section>
+
+    <aside class="summary">
+      <h2>Resumo</h2>
+      <div class="sum-row"><span>Itens</span><b data-cart-count>{{ cart.count }}</b></div>
+      <div class="sum-row"><span>Subtotal</span><b data-subtotal>{{ cart.subtotal|brl }}</b></div>
+      <div class="sum-row discount" data-discount-row {% if not cart.discount %}hidden{% endif %}><span>Desconto <small data-coupon-name>{{ cart.coupon or '' }}</small></span><b data-discount>− {{ cart.discount|brl }}</b></div>
+      <div class="sum-row"><span>Entrega digital</span><b>Grátis</b></div>
+      <div class="sum-row total"><span>Total</span><b class="price" data-cart-total>{{ cart.total|brl }}</b></div>
+
+      <form id="coupon-form" class="coupon">
+        <input id="coupon-input" placeholder="Cupom (ex.: HYDRA10)" value="{{ cart.coupon or '' }}" autocomplete="off">
+        <button class="pill" type="submit">Aplicar</button>
+      </form>
+      <small class="muted">Cupons de teste: <code>HYDRA10</code> (10%) e <code>ESCOLA20</code> (20%).</small>
+
+      <a class="red-btn wide" href="{{ url_for('checkout') }}">CONTINUAR PARA COMPRA ↗</a>
+      <a class="pill wide center" href="{{ url_for('home') }}">← Continuar comprando</a>
+    </aside>
+  </div>
+  <div class="notice"><b>Aviso:</b> esta tela simula o fluxo de compra para trabalho escolar. Não há cobrança nem entrega de jogos ou códigos reais.</div>
+</main>
+{% endblock %}

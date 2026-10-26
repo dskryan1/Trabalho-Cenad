@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Pedido concluído — Hydra{% endblock %}
+{% block content %}
+<main class="page narrow">
+  <div class="stepper-bar"><span class="done">1 Carrinho</span><span class="done">2 Pagamento</span><span class="now">3 Confirmação</span></div>
+  <div class="success-box">
+    <div class="big-check">✓</div>
+    <div class="eyebrow">PAGAMENTO SIMULADO APROVADO</div>
+    <h1>Pedido demonstrativo registrado!</h1>
+    <p class="muted">Nenhum pagamento foi realizado e nenhum produto digital real será enviado.</p>
+  </div>
+  <section class="checkout-card receipt">
+    <div class="sum-row"><span>Pedido</span><b>#{{ o.code }}</b></div>
+    <div class="sum-row"><span>Cliente</span><b>{{ o.name }}</b></div>
+    <div class="sum-row"><span>E-mail</span><b>{{ o.email }}</b></div>
+    <div class="sum-row"><span>Pagamento</span><b>{{ 'Pix (simulado)' if o.method=='pix' else 'Cartão (simulado)' }}</b></div>
+    <hr>
+    {% for i in o["items"] %}<div class="sum-row"><span>{{ i.name }} × {{ i.qty }}</span><b>{{ i.subtotal|brl }}</b></div>{% endfor %}
+    <hr>
+    <div class="sum-row"><span>Subtotal</span><b>{{ o.subtotal|brl }}</b></div>
+    {% if o.discount %}<div class="sum-row discount"><span>Desconto {{ o.coupon }}</span><b>− {{ o.discount|brl }}</b></div>{% endif %}
+    <div class="sum-row total"><span>Total fictício</span><b class="price">{{ o.total|brl }}</b></div>
+  </section>
+  <div class="actions-row">
+    {% if current_user %}<a class="red-btn" href="{{ url_for('account') }}">VER MEUS PEDIDOS</a>{% endif %}
+    <a class="pill" href="{{ url_for('home') }}">VOLTAR À LOJA</a>
+    <a class="pill" href="{{ url_for('support') }}">FALAR COM O SUPORTE</a>
+  </div>
+</main>
+{% endblock %}

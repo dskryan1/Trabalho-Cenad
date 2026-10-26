@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Criar conta' if mode=='register' else 'Entrar' }} — Hydra{% endblock %}
+{% block content %}
+<div class="auth-shell">
+  <section class="auth-art"><div class="eyebrow">HYDRA GAMING</div><h1>JOGUE MAIS.<br><em>VÁ ALÉM.</em></h1><p class="muted">Sua conta reúne o acesso demonstrativo à loja e ao histórico de pedidos.</p></section>
+  <section class="auth-card">
+  {% if mode=='register' %}
+    <div class="eyebrow">COMECE SUA JORNADA</div><h2>Criar conta</h2><p class="muted">Preencha os campos para criar seu perfil Hydra.</p>
+    <form method="post">
+      <div class="field"><label>Nome completo</label><input name="name" required autocomplete="name" maxlength="100"></div>
+      <div class="field"><label>Nome de usuário</label><input name="username" required autocomplete="username" maxlength="30"></div>
+      <div class="field"><label>E-mail</label><input type="email" name="email" required autocomplete="email"></div>
+      <div class="field"><label>Senha (mínimo 8 caracteres)</label><input type="password" name="password" required minlength="8" autocomplete="new-password"></div>
+      <div class="field"><label>Confirmar senha</label><input type="password" name="confirm" required minlength="8" autocomplete="new-password"></div>
+      <button class="red-btn wide" type="submit">CRIAR CONTA ↗</button>
+    </form>
+    <div class="form-foot">Já tem conta? <a href="{{ url_for('login') }}">Entrar</a></div>
+  {% else %}
+    <div class="eyebrow">BEM-VINDO DE VOLTA</div><h2>Entrar na Hydra</h2><p class="muted">Acesse sua conta para continuar.</p>
+    <form method="post">
+      <div class="field"><label>E-mail ou nome de usuário</label><input name="identifier" required autocomplete="username"></div>
+      <div class="field"><label>Senha</label><input type="password" name="password" required autocomplete="current-password"></div>
+      <button class="red-btn wide" type="submit">ENTRAR ↗</button>
+    </form>
+    <div class="form-foot">Ainda não tem conta? <a href="{{ url_for('register') }}">Cadastrar-se</a></div>
+  {% endif %}
+    <div class="demo-warning">Demonstração escolar: use apenas dados fictícios. Não utilize senha real de outros serviços.</div>
+  </section>
+</div>
+{% endblock %}

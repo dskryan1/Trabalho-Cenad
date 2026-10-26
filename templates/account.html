@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Minha conta — Hydra{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="eyebrow">ÁREA DO JOGADOR</div>
+  <h1>Olá, {{ user.name }}!</h1>
+  <p class="muted">Usuário: {{ user.username }} · E-mail: {{ user.email }}</p>
+  <section class="checkout-card">
+    <h2>Histórico de pedidos demonstrativos</h2>
+    {% if orders %}
+    <div class="table-scroll"><table class="order-list"><thead><tr><th>Pedido</th><th>Itens</th><th>Total</th><th>Status</th><th>Data</th></tr></thead><tbody>
+    {% for o in orders %}<tr><td>#{{ o.code or o.id }}</td><td>{{ o.items }}</td><td>{{ o.total|brl }}</td><td>{{ o.status }}</td><td>{{ o.created_at }}</td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}<p class="muted">Você ainda não tem pedidos demonstrativos.</p>{% endif %}
+  </section>
+  <div style="margin-top:20px"><a class="red-btn" href="{{ url_for('home') }}">EXPLORAR A LOJA</a></div>
+</main>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Suporte — Hydra{% endblock %}
+{% block content %}
+<main class="page support-page">
+  <div class="eyebrow">CENTRAL DE AJUDA</div>
+  <h1>Suporte Hydra</h1>
+  <p class="muted">Chat demonstrativo: as respostas são automáticas e pré-programadas para a apresentação do trabalho.</p>
+
+  <div class="support-grid">
+    <section class="chat" aria-label="Chat de suporte">
+      <header class="chat-head">
+        <div class="avatar">🐉</div>
+        <div><b>Hydra Bot</b><small><i class="online"></i> Online · atendimento demonstrativo</small></div>
+        <button type="button" class="pill" id="chat-reset">Reiniciar</button>
+      </header>
+      <div class="chat-body" id="chat-body" aria-live="polite"></div>
+      <div class="quick" id="quick"></div>
+      <form class="chat-input" id="chat-form" autocomplete="off">
+        <input id="chat-text" placeholder="Digite sua dúvida…" aria-label="Mensagem" maxlength="200">
+        <button class="red-btn" type="submit">Enviar ➤</button>
+      </form>
+    </section>
+
+    <aside class="faq">
+      <div class="panel"><h3>❓ <span>PERGUNTAS FREQUENTES</span></h3>
+        <ul class="faq-list">
+          <li><b>Como pago?</b><span>Pix ou cartão — ambos simulados.</span></li>
+          <li><b>Recebo o produto?</b><span>Não. É um projeto escolar, nada é entregue.</span></li>
+          <li><b>Tem cupom?</b><span>Teste <code>HYDRA10</code> ou <code>ESCOLA20</code>.</span></li>
+        </ul>
+      </div>
+      <div class="panel"><h3>📌 <span>AVISO</span></h3><p>O atendimento 24h é apenas uma proposta do projeto. Este chat não conecta a pessoas reais.</p></div>
+    </aside>
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='chat.js') }}"></script>{% endblock %}

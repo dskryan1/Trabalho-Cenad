@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card, side_panels with context %}
+{% block title %}{{ cat.name }} — Hydra{% endblock %}
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-nav">
+      <a href="{{ url_for('home') }}">◈ Início</a>
+      {% for c in categories %}<a class="{{ 'active' if c.slug == cat.slug }}" href="{{ url_for('category', slug=c.slug) }}"><span>{{ c.icon }} {{ c.menu }}</span><em>{{ cat_counts[c.slug] }}</em></a>{% endfor %}
+      <a href="{{ url_for('support') }}">💬 Suporte</a>
+    </div>
+  </aside>
+  <main>
+    <div class="crumbs"><a href="{{ url_for('home') }}">Início</a> › {{ cat.name }}</div>
+    <div class="section-head big">
+      <div><h2><span>{{ cat.icon }}</span>{{ cat.name }}</h2><p>{{ cat.desc }} · {{ products|length }} itens demonstrativos</p></div>
+      <form class="sort" method="get"><label for="ordem">Ordenar</label>
+        <select id="ordem" name="ordem" onchange="this.form.submit()">
+          <option value="" {{ 'selected' if not sort }}>Destaques</option>
+          <option value="menor" {{ 'selected' if sort=='menor' }}>Menor preço</option>
+          <option value="maior" {{ 'selected' if sort=='maior' }}>Maior preço</option>
+          <option value="nome" {{ 'selected' if sort=='nome' }}>Nome (A–Z)</option>
+        </select></form>
+    </div>
+    <div class="product-grid">{% for p in products %}{{ product_card(p, cat.ratio) }}{% endfor %}</div>
+    <div class="notice"><b>Aviso:</b> itens e preços fictícios para apresentação escolar.</div>
+  </main>
+  {{ side_panels() }}
+</div>
+{% endblock %}
