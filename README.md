@@ -1,34 +1,31 @@
-# HYDRA — Loja gamer demonstrativa (Python 3.13)
+# HYDRA — Loja gamer DEMONSTRATIVA (Python 3.13 + Flask)
 
-Projeto escolar com identidade gamer vermelha/preta, arte gerada por IA, catálogo ilustrativo, cadastro/login, carrinho, checkout fictício e histórico de pedidos.
+Projeto escolar. **Nada é real**: não há pagamento, cobrança, entrega de jogos ou códigos.
 
-## Instalar no Windows
-1. Instale Python 3.13 (marque “Add Python to PATH”).
-2. Extraia a pasta do projeto.
-3. Execute `instalar_windows.bat`.
-4. Execute `iniciar_windows.bat`.
-5. Acesse http://127.0.0.1:5000.
+## Rodar no Windows
+1. Instale o Python 3.13 (marque "Add Python to PATH").
+2. Execute `instalar_windows.bat` e depois `iniciar_windows.bat`.
+3. Abra http://127.0.0.1:5000
 
 ## Publicar no Render
-1. Envie a pasta para um repositório GitHub.
-2. No Render, crie um Web Service e conecte o repositório.
-3. Build Command: `pip install -r requirements.txt`
-4. Start Command: `gunicorn app:app`
-5. Configure `SECRET_KEY` como variável de ambiente segura.
-6. Para guardar contas e pedidos de forma persistente em produção, configure um banco PostgreSQL gerenciado. SQLite no disco efêmero do serviço pode perder dados após redeploy/restart; o disco persistente depende do plano e da configuração do Render.
+Build: `pip install -r requirements.txt` · Start: `gunicorn app:app` · variável `SECRET_KEY` segura.
 
-## Recursos
-- Registro com hash de senha (Werkzeug), login e logout.
-- Carrinho em sessão e ajuste de quantidades.
-- Checkout demonstrativo sem cobrança.
-- Histórico de pedidos demonstrativos por conta.
-- Busca de catálogo e filtros por categoria.
-- Arte visual gerada por IA incluída em `static/images`.
+## O que tem
+- **5 categorias** (menu, página inicial e página própria): Jogos, Gift Cards, Serviços de Otimização, Mods e Upamento de Contas — 29 produtos.
+- **Imagens padronizadas**: jogos em poster vertical 3:4; demais itens em banner 16:10. Artes originais geradas por `tools/gerar_imagens.py` (sem capas/logos oficiais).
+- **Carrinho com soma em tempo real**: adicionar sem recarregar a página, botões + / − / remover, total, contador no topo e mini-carrinho.
+- **Cupons de teste**: `HYDRA10` (10%) e `ESCOLA20` (20%).
+- **Checkout fake**: dados, Pix (QR ilustrativo) ou Cartão (visual), animação de "processando", tela de confirmação com nº do pedido (`HYD-000000`).
+- **Suporte**: página `/suporte` com chat demonstrativo (respostas pré-programadas, botões rápidos, "digitando…").
+- Cadastro/login (senha com hash) e histórico de pedidos demo em "Minha conta" (o checkout também funciona sem login).
 
-## Limites importantes
-- Os gift cards, preços e produtos são fictícios e marcados como demonstração escolar.
-- Não existe pagamento real, emissão de códigos ou entrega de produtos.
-- Não use dados pessoais/senhas reais para testar.
-- Antes de produção, adicione proteção CSRF, limitação de tentativas de login, verificação de e-mail, política de privacidade, termos, gateway de pagamento e banco persistente.
-- O suporte 24h é uma ideia do projeto, não um atendimento já ativo.
-- A arte gerada por IA é ilustrativa; não representa capas oficiais nem garante direitos de revenda.
+## Apresentação (roteiro sugerido)
+Home → categoria → adicionar itens → carrinho (+/−, cupom) → pagar (Pix/Cartão) → confirmação → Suporte (chat).
+
+## Para editar produtos
+Altere a lista `PRODUCTS` em `app.py`. Para regenerar as artes: `pip install pillow` e `python tools/gerar_imagens.py`.
+
+## Limites
+- Dados de cartão digitados no checkout não são enviados nem salvos (campos sem `name`).
+- Não use senhas ou dados reais. SQLite em hospedagem gratuita pode ser apagado a cada reinício.
+- O suporte 24h é só uma proposta do projeto.
