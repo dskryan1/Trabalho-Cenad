@@ -1,43 +1,34 @@
-# Hydra — site gamer em Python 3.13
+# HYDRA — Loja gamer demonstrativa (Python 3.13)
 
-Site demonstrativo com visual gamer escuro, catálogo filtrável, serviços e seção de suporte. Feito com Flask e preparado para deploy no Render.
+Projeto escolar com identidade gamer vermelha/preta, arte gerada por IA, catálogo ilustrativo, cadastro/login, carrinho, checkout fictício e histórico de pedidos.
 
-## Rodar no Windows
-1. Instale Python 3.13 e marque **Add Python to PATH** durante a instalação.
-2. Extraia a pasta Hydra.
-3. Execute `instalar_windows.bat` uma vez.
-4. Depois execute `iniciar_windows.bat`.
+## Instalar no Windows
+1. Instale Python 3.13 (marque “Add Python to PATH”).
+2. Extraia a pasta do projeto.
+3. Execute `instalar_windows.bat`.
+4. Execute `iniciar_windows.bat`.
 5. Acesse http://127.0.0.1:5000.
 
-## Rodar no Linux/macOS
-No terminal, dentro da pasta:
-```bash
-chmod +x instalar_linux_mac.sh iniciar_linux_mac.sh
-./instalar_linux_mac.sh
-./iniciar_linux_mac.sh
-```
-
 ## Publicar no Render
-1. Envie os arquivos desta pasta para um repositório GitHub.
-2. No Render, escolha **New + → Web Service** e conecte o repositório.
-3. O `render.yaml` configura build `pip install -r requirements.txt`, comando `gunicorn app:app` e health check `/health`.
-4. Se criar o serviço manualmente, use:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn app:app`
-   - Runtime: Python 3.13, se disponível na configuração do serviço.
-5. Após o deploy, use o endereço `.onrender.com` fornecido pelo Render.
+1. Envie a pasta para um repositório GitHub.
+2. No Render, crie um Web Service e conecte o repositório.
+3. Build Command: `pip install -r requirements.txt`
+4. Start Command: `gunicorn app:app`
+5. Configure `SECRET_KEY` como variável de ambiente segura.
+6. Para guardar contas e pedidos de forma persistente em produção, configure um banco PostgreSQL gerenciado. SQLite no disco efêmero do serviço pode perder dados após redeploy/restart; o disco persistente depende do plano e da configuração do Render.
 
-## Antes de vender de verdade
-- O catálogo, nomes e preços são exemplos; confirme disponibilidade e direitos de revenda.
-- O botão de contato usa um e-mail de exemplo (`suporte@hydra.example`); troque pelo canal real.
-- A seção fala em suporte 24h como meta, não como serviço já operacional. Configure equipe, escala e canais antes de prometer atendimento 24h.
-- Esta versão é um site institucional/vitrine, não tem cadastro, pagamentos, estoque, carrinho nem entrega automática.
-- Não colete senhas ou códigos de autenticação. Venda gift cards apenas por canais autorizados e respeite os termos das plataformas.
-- Não ofereça boosting, mods ou ferramentas que violem os termos de jogos/anti-cheat.
+## Recursos
+- Registro com hash de senha (Werkzeug), login e logout.
+- Carrinho em sessão e ajuste de quantidades.
+- Checkout demonstrativo sem cobrança.
+- Histórico de pedidos demonstrativos por conta.
+- Busca de catálogo e filtros por categoria.
+- Arte visual gerada por IA incluída em `static/images`.
 
-## Estrutura
-- `app.py`: aplicação Flask e catálogo de exemplo.
-- `templates/index.html`: página principal.
-- `static/style.css`: visual responsivo.
-- `static/app.js`: filtros do catálogo.
-- `requirements.txt`, `Procfile`, `runtime.txt`, `render.yaml`: configuração de execução/deploy.
+## Limites importantes
+- Os gift cards, preços e produtos são fictícios e marcados como demonstração escolar.
+- Não existe pagamento real, emissão de códigos ou entrega de produtos.
+- Não use dados pessoais/senhas reais para testar.
+- Antes de produção, adicione proteção CSRF, limitação de tentativas de login, verificação de e-mail, política de privacidade, termos, gateway de pagamento e banco persistente.
+- O suporte 24h é uma ideia do projeto, não um atendimento já ativo.
+- A arte gerada por IA é ilustrativa; não representa capas oficiais nem garante direitos de revenda.
